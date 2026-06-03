@@ -35,20 +35,33 @@ class SolicitacaoForm(forms.ModelForm):
             'usuario',
             'assinado_por',
             'data_assinatura',
+            'criado_em'
         ]
 
         widgets = {
 
-            'telefone': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': '(99) 99999-9999',
-                'maxlength': '15',
-            }),
-
             'cpf': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': '000.000.000-00',
-                'maxlength': '14',
+                'maxlength': '14'
+            }),
+
+            'telefone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '(99) 99999-9999',
+                'maxlength': '15'
+            }),
+
+            'data_evento': forms.DateInput(attrs={
+                'type': 'date'
+            }),
+
+            'hora_inicio': forms.TimeInput(attrs={
+                'type': 'time'
+            }),
+
+            'hora_fim': forms.TimeInput(attrs={
+                'type': 'time'
             }),
         }
 
@@ -61,7 +74,7 @@ class SolicitacaoForm(forms.ModelForm):
         if not re.match(padrao, telefone):
 
             raise forms.ValidationError(
-                'Telefone inválido. Use: (99) 99999-9999'
+                'Telefone inválido. Use (99) 99999-9999'
             )
 
         return telefone
@@ -77,7 +90,6 @@ class SolicitacaoForm(forms.ModelForm):
                 'CPF inválido.'
             )
 
-        # elimina sequências iguais
         if cpf == cpf[0] * 11:
             raise forms.ValidationError(
                 'CPF inválido.'
@@ -115,6 +127,22 @@ class SolicitacaoForm(forms.ModelForm):
 
         return cpf
 
+    def clean_data_evento(self):
+
+        data_evento = self.cleaned_data.get(
+            'data_evento'
+        )
+
+        limite = timezone.now().date() + timedelta(days=3)
+
+        if data_evento < limite:
+
+            raise forms.ValidationError(
+                'O evento deve ser solicitado com pelo menos 72 horas de antecedência.'
+            )
+
+        return data_evento
+
     def clean(self):
 
         cleaned_data = super().clean()
@@ -134,7 +162,7 @@ class SolicitacaoForm(forms.ModelForm):
         if not prefeitura:
 
             raise forms.ValidationError(
-                'O documento sanitário é obrigatório.'
+                'O Documento Sanitário é obrigatório.'
             )
 
         if publico and publico > 2000 and not bombeiro:
@@ -144,22 +172,6 @@ class SolicitacaoForm(forms.ModelForm):
             )
 
         return cleaned_data
-
-    def clean_data_evento(self):
-
-        data_evento = self.cleaned_data[
-            'data_evento'
-        ]
-
-        limite = timezone.now().date() + timedelta(days=3)
-
-        if data_evento < limite:
-
-            raise forms.ValidationError(
-                'O evento deve ser solicitado com pelo menos 72 horas de antecedência.'
-            )
-
-        return data_evento
 
     def clean_oficio_prefeitura(self):
 
