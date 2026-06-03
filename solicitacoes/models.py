@@ -4,7 +4,7 @@ import uuid
 from django.db import models
 from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import User
-from solicitacoes.models import Solicitacao
+
 
 
 class Solicitacao(models.Model):
