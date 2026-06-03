@@ -1,0 +1,22 @@
+<h2>Aprovar Solicitação</h2>
+
+<p><strong>Evento:</strong> {{ solicitacao.nome_evento }}</p>
+<p><strong>Solicitante:</strong> {{ solicitacao.solicitante }}</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Parecer Operacional:</label><br>
+
+    <textarea
+        name="parecer"
+        rows="6"
+        cols="60"
+    ></textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Aprovar Solicitação
+    </button>
+</form>

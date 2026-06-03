@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+        SiEv
+        {% endblock %}
+    </title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f4f6f9;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+        }
+
+        /* CABEÇALHO */
+
+        .header{
+
+            background:white;
+
+            padding:15px 30px;
+
+            box-shadow:0 2px 10px rgba(0,0,0,.08);
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:space-between;
+
+            flex-wrap:wrap;
+        }
+
+        .logo{
+
+            width:90px;
+            height:auto;
+        }
+
+        .titulo{
+
+            text-align:center;
+            flex:1;
+        }
+
+        .titulo h1{
+
+            color:#1e3a8a;
+            font-size:36px;
+        }
+
+        .titulo p{
+
+            color:#6b7280;
+            margin-top:5px;
+        }
+
+        /* MENU */
+
+        .menu{
+
+            background:#1e3a8a;
+
+            display:flex;
+
+            justify-content:center;
+
+            gap:20px;
+
+            padding:15px;
+
+            flex-wrap:wrap;
+        }
+
+        .menu a{
+
+            color:white;
+
+            text-decoration:none;
+
+            font-weight:bold;
+
+            padding:10px 15px;
+
+            border-radius:8px;
+
+            transition:.3s;
+        }
+
+        .menu a:hover{
+
+            background:white;
+
+            color:#1e3a8a;
+        }
+
+        /* CONTEÚDO */
+
+        .container{
+
+            width:95%;
+
+            max-width:1200px;
+
+            margin:30px auto;
+
+            flex:1;
+        }
+
+        /* BOTÕES */
+
+        .btn{
+
+            display:inline-block;
+
+            padding:12px 20px;
+
+            border-radius:8px;
+
+            text-decoration:none;
+
+            font-weight:bold;
+        }
+
+        .btn-primary{
+
+            background:#0d6efd;
+            color:white;
+        }
+
+        .btn-success{
+
+            background:#198754;
+            color:white;
+        }
+
+        .btn-dark{
+
+            background:#212529;
+            color:white;
+        }
+
+        /* VOLTAR */
+
+        .voltar{
+
+            display:inline-block;
+
+            margin-top:20px;
+
+            color:#1e3a8a;
+
+            text-decoration:none;
+
+            font-weight:bold;
+        }
+
+        /* RODAPÉ */
+
+        footer{
+
+            background:#111827;
+
+            color:white;
+
+            text-align:center;
+
+            padding:20px;
+        }
+
+        /* RESPONSIVO */
+
+        @media(max-width:768px){
+
+            .header{
+
+                flex-direction:column;
+
+                gap:15px;
+            }
+
+            .logo{
+
+                width:70px;
+            }
+
+            .titulo h1{
+
+                font-size:28px;
+            }
+
+            .menu{
+
+                flex-direction:column;
+            }
+
+            .menu a{
+
+                text-align:center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <img
+        src="/media/logos/logo_pmba.png"
+        class="logo"
+    >
+
+    <div class="titulo">
+
+        <h1>SiEv</h1>
+
+        <p>
+            Sistema Integrado de Eventos
+        </p>
+
+    </div>
+
+    <img
+        src="/media/logos/logo95.png"
+        class="logo"
+    >
+
+</header>
+
+<nav class="menu">
+
+    <a href="/">
+        Início
+    </a>
+
+    <a href="/nova/">
+        Nova Solicitação
+    </a>
+
+    <a href="/consultar/">
+        Consultar
+    </a>
+
+    <a href="/gestao/">
+        Gestão
+    </a>
+
+</nav>
+
+<div class="container">
+
+    {% block content %}
+    {% endblock %}
+
+</div>
+
+<footer>
+
+    © 95ª CIPM • Sistema Integrado de Eventos
+
+</footer>
+
+</body>
+</html>
+</html>

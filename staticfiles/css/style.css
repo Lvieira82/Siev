@@ -1,0 +1,70 @@
+body{
+    background: #f4f7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.navbar{
+    background: linear-gradient(90deg, #0d3b66, #145da0);
+    padding: 15px;
+}
+
+.navbar-brand{
+    font-size: 22px;
+}
+
+.card{
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.card-header{
+    background: #145da0;
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    font-weight: bold;
+}
+
+.btn-primary{
+    background: #145da0;
+    border: none;
+}
+
+.btn-primary:hover{
+    background: #0d3b66;
+}
+
+.btn-success{
+    border-radius: 10px;
+}
+
+.btn-danger{
+    border-radius: 10px;
+}
+
+.table{
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.badge{
+    padding: 10px;
+    font-size: 13px;
+}
+
+.form-control{
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.form-label{
+    font-weight: 600;
+}
+
+.titulo-pagina{
+    font-size: 32px;
+    font-weight: bold;
+    color: #0d3b66;
+    margin-bottom: 20px;
+}

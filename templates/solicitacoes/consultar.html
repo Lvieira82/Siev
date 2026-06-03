@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Consultar Solicitação</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f6f9;
+    text-align:center;
+    padding-top:80px;
+}
+
+.card{
+    background:white;
+    width:500px;
+    margin:auto;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+}
+
+button{
+    margin-top:15px;
+    padding:12px 20px;
+    background:#0066cc;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+a{
+    display:block;
+    margin-top:20px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="card">
+
+    <h2>Consultar Solicitação</h2>
+
+    <form method="GET">
+
+        <input
+            type="text"
+            name="protocolo"
+            placeholder="Digite o protocolo"
+            required
+        >
+
+        <button type="submit">
+            Consultar
+        </button>
+
+    </form>
+
+    <a href="/">
+        Voltar para Home
+    </a>
+
+</div>
+
+</body>
+</html>
