@@ -12,6 +12,7 @@ from .models import Solicitacao
 from .forms import SolicitacaoForm
 from django.http import HttpResponse
 import traceback
+from django.shortcuts import render
 
 def nova_solicitacao(request):
 
@@ -62,3 +63,7 @@ def nova_solicitacao(request):
         'solicitacoes/nova.html',
         {'form': form}
     )
+    
+
+def home(request):
+    return render(request, 'home.html')

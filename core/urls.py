@@ -17,9 +17,6 @@ from solicitacoes.views import (
     painel_gestao,
 )
 
-from solicitacoes.views import (
-    consultar_protocolo
-)
 
 urlpatterns = [
     path('gestao/', login_gestao, name='login_gestao'),
