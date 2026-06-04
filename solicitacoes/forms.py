@@ -120,37 +120,37 @@ class SolicitacaoForm(forms.ModelForm):
         return cleaned_data
 
 
-def clean_documento_sanitario(self):
+    def clean_documento_sanitario(self):
 
-    arquivo = self.cleaned_data.get(
-        'documento_sanitario'
-    )
+        arquivo = self.cleaned_data.get(
+            'documento_sanitario'
+        )
 
-    if arquivo:
-        validar_pdf(arquivo)
+        if arquivo:
+            validar_pdf(arquivo)
 
-    return arquivo
-
-
-def clean_documento_meio_ambiente(self):
-
-    arquivo = self.cleaned_data.get(
-        'documento_meio_ambiente'
-    )
-
-    if arquivo:
-        validar_pdf(arquivo)
-
-    return arquivo
+        return arquivo
 
 
-def clean_oficio_bombeiro(self):
+    def clean_documento_meio_ambiente(self):
 
-    arquivo = self.cleaned_data.get(
+        arquivo = self.cleaned_data.get(
+            'documento_meio_ambiente'
+        )
+
+        if arquivo:
+            validar_pdf(arquivo)
+
+        return arquivo
+
+
+    def clean_oficio_bombeiro(self):
+
+        arquivo = self.cleaned_data.get(
         'oficio_bombeiro'
-    )
+        )
 
-    if arquivo:
-        validar_pdf(arquivo)
+        if arquivo:
+            validar_pdf(arquivo)
 
-    return arquivo
+        return arquivo
