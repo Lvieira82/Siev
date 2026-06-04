@@ -19,6 +19,8 @@ from django.shortcuts import render
 def nova_solicitacao(request):
 
     if request.method == 'POST':
+        print("ENTROU NA VIEW")
+        
 
         form = SolicitacaoForm(request.POST, request.FILES)
 
@@ -91,31 +93,50 @@ def home(request):
 # NOVA SOLICITAÇÃO
 # =====================================================
 
+from django.shortcuts import render
+from django.core.mail import send_mail
+from django.conf import settings
+
+from .forms import SolicitacaoForm
+
+
 def nova_solicitacao(request):
 
     if request.method == 'POST':
+
+        print('=' * 50)
+        print('ENTROU NO POST')
+        print('=' * 50)
 
         form = SolicitacaoForm(
             request.POST,
             request.FILES
         )
 
+        print('FORMULÁRIO RECEBIDO')
+
         if form.is_valid():
 
-            solicitacao = form.save(commit=False)
+            print('FORMULÁRIO VÁLIDO')
 
-            solicitacao.status = 'PENDENTE'
+            try:
 
-            solicitacao.save()
+                solicitacao = form.save(commit=False)
 
-            print("PROTOCOLO GERADO:", solicitacao.protocolo)
-          
-            assunto = 'Solicitação de Evento Recebida'
+                solicitacao.status = 'PENDENTE'
 
-            mensagem = f'''
-            Olá, {solicitacao.solicitante}!
+                solicitacao.save()
 
-            Sua solicitação foi enviada com sucesso.
+                print(
+                    f'SOLICITAÇÃO SALVA - PROTOCOLO: {solicitacao.protocolo}'
+                )
+
+                assunto = 'Solicitação de Evento Recebida'
+
+                mensagem = f'''
+Olá, {solicitacao.solicitante}!
+
+Sua solicitação foi enviada com sucesso.
 
 PROTOCOLO:
 {solicitacao.protocolo}
@@ -131,34 +152,52 @@ STATUS:
 
 Guarde este protocolo para acompanhamento.
 
-PMBA, Uma Força a serviço do cidadão!
-            '''
-            # =================================================
-            # ENVIO DE EMAIL
-            # =================================================
+PMBA, Uma Força a Serviço do Cidadão!
+                '''
 
-           
-            #try:
+                try:
 
-                #send_mail(
-                    #assunto,
-                    #mensagem,
-                    #settings.DEFAULT_FROM_EMAIL,
-                    #[solicitacao.email],
-                    #fail_silently=True
-                #)
+                    send_mail(
+                        assunto,
+                        mensagem,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [solicitacao.email],
+                        fail_silently=True
+                    )
 
-            #except Exception as erro:
+                    print('EMAIL ENVIADO')
 
-                #print('ERRO AO ENVIAR EMAIL:', erro)
+                except Exception as erro_email:
 
-            return render(
-                request,
-                'solicitacoes/sucesso.html',
-                {
-                    'protocolo': solicitacao.protocolo
-                }
-            )
+                    print(
+                        f'ERRO AO ENVIAR EMAIL: {erro_email}'
+                    )
+
+                return render(
+                    request,
+                    'solicitacoes/sucesso.html',
+                    {
+                        'protocolo': solicitacao.protocolo
+                    }
+                )
+
+            except Exception as erro:
+
+                print('=' * 50)
+                print('ERRO AO SALVAR SOLICITAÇÃO')
+                print(str(erro))
+                print(type(erro))
+                print('=' * 50)
+
+                raise
+
+        else:
+
+            print('=' * 50)
+            print('FORMULÁRIO INVÁLIDO')
+            print(form.errors)
+            print(form.non_field_errors())
+            print('=' * 50)
 
     else:
 
