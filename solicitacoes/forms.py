@@ -79,118 +79,78 @@ class SolicitacaoForm(forms.ModelForm):
 
         return telefone
 
-    def clean_cpf(self):
-
-        cpf = self.cleaned_data.get('cpf')
-
-        cpf = re.sub(r'[^0-9]', '', cpf)
-
-        if len(cpf) != 11:
-            raise forms.ValidationError(
-                'CPF inválido.'
-            )
-
-        if cpf == cpf[0] * 11:
-            raise forms.ValidationError(
-                'CPF inválido.'
-            )
-
-        soma = 0
-
-        for i in range(9):
-            soma += int(cpf[i]) * (10 - i)
-
-        digito = (soma * 10) % 11
-
-        if digito == 10:
-            digito = 0
-
-        if digito != int(cpf[9]):
-            raise forms.ValidationError(
-                'CPF inválido.'
-            )
-
-        soma = 0
-
-        for i in range(10):
-            soma += int(cpf[i]) * (11 - i)
-
-        digito = (soma * 10) % 11
-
-        if digito == 10:
-            digito = 0
-
-        if digito != int(cpf[10]):
-            raise forms.ValidationError(
-                'CPF inválido.'
-            )
-
-        return cpf
-
-    def clean_data_evento(self):
-
-        data_evento = self.cleaned_data.get(
-            'data_evento'
-        )
-
-        limite = timezone.now().date() + timedelta(days=3)
-
-        if data_evento < limite:
-
-            raise forms.ValidationError(
-                'O evento deve ser solicitado com pelo menos 72 horas de antecedência.'
-            )
-
-        return data_evento
-
     def clean(self):
 
         cleaned_data = super().clean()
 
         publico = cleaned_data.get(
-            'publico_estimado'
+        'publico_estimado'
         )
 
-        prefeitura = cleaned_data.get(
-            'oficio_prefeitura'
+        documento_sanitario = cleaned_data.get(
+        'documento_sanitario'
+        )
+
+        documento_meio_ambiente = cleaned_data.get(
+        'documento_meio_ambiente'
         )
 
         bombeiro = cleaned_data.get(
-            'oficio_bombeiro'
+        'oficio_bombeiro'
         )
 
-        if not prefeitura:
+        if not documento_sanitario:
 
             raise forms.ValidationError(
-                'O Documento Sanitário é obrigatório.'
+            'O Documento Sanitário é obrigatório.'
+            )
+
+        if not documento_meio_ambiente:
+
+            raise forms.ValidationError(
+            'O Documento de Meio Ambiente é obrigatório.'
             )
 
         if publico and publico > 2000 and not bombeiro:
 
             raise forms.ValidationError(
-                'Eventos acima de 2000 pessoas precisam do documento do Corpo de Bombeiros.'
+            'Eventos acima de 2000 pessoas precisam do documento do Corpo de Bombeiros.'
             )
 
         return cleaned_data
 
-    def clean_oficio_prefeitura(self):
 
-        arquivo = self.cleaned_data.get(
-            'oficio_prefeitura'
-        )
+def clean_documento_sanitario(self):
 
-        if arquivo:
-            validar_pdf(arquivo)
+    arquivo = self.cleaned_data.get(
+        'documento_sanitario'
+    )
 
-        return arquivo
+    if arquivo:
+        validar_pdf(arquivo)
 
-    def clean_oficio_bombeiro(self):
+    return arquivo
 
-        arquivo = self.cleaned_data.get(
-            'oficio_bombeiro'
-        )
 
-        if arquivo:
-            validar_pdf(arquivo)
+def clean_documento_meio_ambiente(self):
 
-        return arquivo
+    arquivo = self.cleaned_data.get(
+        'documento_meio_ambiente'
+    )
+
+    if arquivo:
+        validar_pdf(arquivo)
+
+    return arquivo
+
+
+def clean_oficio_bombeiro(self):
+
+    arquivo = self.cleaned_data.get(
+        'oficio_bombeiro'
+    )
+
+    if arquivo:
+        validar_pdf(arquivo)
+
+    return arquivo
