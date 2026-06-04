@@ -98,19 +98,19 @@ Guarde este protocolo para acompanhamento.
 PMBA, Uma Força a serviço do cidadão!
             '''
 
-            try:
+            #try:
 
-                send_mail(
-                    assunto,
-                    mensagem,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [solicitacao.email],
-                    fail_silently=True
-                )
+                #send_mail(
+                    #assunto,
+                    #mensagem,
+                    #settings.DEFAULT_FROM_EMAIL,
+                    #[solicitacao.email],
+                    #fail_silently=True
+                #)
 
-            except Exception as erro:
+            #except Exception as erro:
 
-                print('ERRO AO ENVIAR EMAIL:', erro)
+                #print('ERRO AO ENVIAR EMAIL:', erro)
 
             return render(
                 request,
