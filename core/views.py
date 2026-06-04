@@ -10,6 +10,69 @@ import os
 from reportlab.pdfgen import canvas
 from .models import Solicitacao
 from .forms import SolicitacaoForm
+from django.http import HttpResponse
+import traceback
+from django.shortcuts import render
+from django.shortcuts import render
+
+
+def nova_solicitacao(request):
+
+    if request.method == 'POST':
+        print("ENTROU NA VIEW")
+        
+
+        form = SolicitacaoForm(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            try:
+
+                solicitacao = form.save(commit=False)
+                solicitacao.status = 'PENDENTE'
+                solicitacao.save()
+
+                send_mail(
+                    'Solicitação Recebida',
+                    'Teste',
+                    settings.DEFAULT_FROM_EMAIL,
+                    [solicitacao.email],
+                    fail_silently=False
+                )
+
+                return render(
+                    request,
+                    'solicitacoes/sucesso.html',
+                    {'protocolo': solicitacao.protocolo}
+                )
+
+            except Exception as e:
+
+                erro = traceback.format_exc()
+
+                return HttpResponse(
+                    f"<pre>{erro}</pre>"
+                )
+
+        else:
+
+            return HttpResponse(
+                str(form.errors)
+            )
+
+    form = SolicitacaoForm()
+
+    return render(
+        request,
+        'solicitacoes/nova.html',
+        {'form': form}
+    )
+   
+def minhas_solicitacoes(request):
+    return render(
+        request,
+        'solicitacoes/minhas_solicitacoes.html'
+    )
 
 # =====================================================
 # HOME
@@ -30,53 +93,47 @@ def home(request):
 # NOVA SOLICITAÇÃO
 # =====================================================
 
+from django.shortcuts import render
+from django.core.mail import send_mail
+from django.conf import settings
+
+from .forms import SolicitacaoForm
+
+
 def nova_solicitacao(request):
 
     if request.method == 'POST':
+
+        print('=' * 50)
+        print('ENTROU NO POST')
+        print('=' * 50)
 
         form = SolicitacaoForm(
             request.POST,
             request.FILES
         )
 
+        print('FORMULÁRIO RECEBIDO')
+
         if form.is_valid():
 
-            solicitacao = form.save(commit=False)
+            print('FORMULÁRIO VÁLIDO')
 
-            solicitacao.status = 'PENDENTE'
+            try:
 
-            solicitacao.save()
-          
-            assunto = 'Solicitação de Evento Recebida'
+                solicitacao = form.save(commit=False)
 
-            mensagem = f'''
-            Olá, {solicitacao.solicitante}!
+                solicitacao.status = 'PENDENTE'
 
-            Sua solicitação foi enviada com sucesso.
+                solicitacao.save()
 
-PROTOCOLO:
-{solicitacao.protocolo}
+                print(
+                    f'SOLICITAÇÃO SALVA - PROTOCOLO: {solicitacao.protocolo}'
+                )
 
-EVENTO:
-{solicitacao.nome_evento}
+                assunto = 'Solicitação de Evento Recebida'
 
-DATA:
-{solicitacao.data_evento}
-
-STATUS:
-{solicitacao.status}
-
-Guarde este protocolo para acompanhamento.
-
-Prefeitura Municipal
-'''
-            # =================================================
-            # ENVIO DE EMAIL
-            # =================================================
-
-            assunto = 'Solicitação de Evento Recebida'
-
-            mensagem = f'''
+                mensagem = f'''
 Olá, {solicitacao.solicitante}!
 
 Sua solicitação foi enviada com sucesso.
@@ -95,30 +152,52 @@ STATUS:
 
 Guarde este protocolo para acompanhamento.
 
-PMBA, Uma Força a serviço do cidadão!
-            '''
+PMBA, Uma Força a Serviço do Cidadão!
+                '''
 
-            #try:
+                try:
 
-                #send_mail(
-                    #assunto,
-                    #mensagem,
-                    #settings.DEFAULT_FROM_EMAIL,
-                    #[solicitacao.email],
-                    #fail_silently=True
-                #)
+                    send_mail(
+                        assunto,
+                        mensagem,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [solicitacao.email],
+                        fail_silently=True
+                    )
 
-            #except Exception as erro:
+                    print('EMAIL ENVIADO')
 
-                #print('ERRO AO ENVIAR EMAIL:', erro)
+                except Exception as erro_email:
 
-            return render(
-                request,
-                'solicitacoes/sucesso.html',
-                {
-                    'protocolo': solicitacao.protocolo
-                }
-            )
+                    print(
+                        f'ERRO AO ENVIAR EMAIL: {erro_email}'
+                    )
+
+                return render(
+                    request,
+                    'solicitacoes/sucesso.html',
+                    {
+                        'protocolo': solicitacao.protocolo
+                    }
+                )
+
+            except Exception as erro:
+
+                print('=' * 50)
+                print('ERRO AO SALVAR SOLICITAÇÃO')
+                print(str(erro))
+                print(type(erro))
+                print('=' * 50)
+
+                raise
+
+        else:
+
+            print('=' * 50)
+            print('FORMULÁRIO INVÁLIDO')
+            print(form.errors)
+            print(form.non_field_errors())
+            print('=' * 50)
 
     else:
 
@@ -237,7 +316,7 @@ DATA:
 STATUS:
 {solicitacao.status}
 
-Prefeitura Municipal
+PMBA, Uma Força a serviço do cidadão!
     '''
 
     try:
@@ -423,3 +502,5 @@ def painel_gestao(request):
         request,
         'gestao/painel.html'
     )
+def home(request):
+    return render(request, 'home.html')
