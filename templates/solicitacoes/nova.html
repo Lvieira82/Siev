@@ -206,17 +206,12 @@ textarea{
 
         <div class="upload-box full">
             <label>Documento Sanitário (PDF) *</label>
-            {{ form.oficio_prefeitura }}
+            {{ form.documento_sanitario }}
         </div>
 
         <div class="upload-box full">
             <label>Documento do Meio Ambiente (PDF) *</label>
-            <input
-                type="file"
-                name="documento_meio_ambiente"
-                accept=".pdf"
-                required
-            >
+            {{ form.documento_meio_ambiente }}
         </div>
 
         <div

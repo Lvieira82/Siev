@@ -107,6 +107,8 @@ def nova_solicitacao(request):
             solicitacao.status = 'PENDENTE'
 
             solicitacao.save()
+
+            print("PROTOCOLO GERADO:", solicitacao.protocolo)
           
             assunto = 'Solicitação de Evento Recebida'
 
@@ -275,7 +277,7 @@ DATA:
 STATUS:
 {solicitacao.status}
 
-Prefeitura Municipal
+PMBA, Uma Força a serviço do cidadão!
     '''
 
     try:
