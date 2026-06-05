@@ -80,20 +80,24 @@ class Solicitacao(models.Model):
 
     documento_sanitario = models.FileField(
         upload_to='documentos/sanitario/',
+        blank=True,
+        null=True,
         validators=[
         FileExtensionValidator(
-            allowed_extensions=['pdf']
-        )
-    ]
+                allowed_extensions=['pdf']
+            )
+        ]
     )
 
     documento_meio_ambiente = models.FileField(
         upload_to='documentos/meio_ambiente/',
+        blank=True,
+        null=True,
         validators=[
-        FileExtensionValidator(
-            allowed_extensions=['pdf']
-        )
-    ]
+            FileExtensionValidator(
+                allowed_extensions=['pdf']
+            )
+        ]
     )
 
     oficio_bombeiro = models.FileField(
